@@ -13,14 +13,13 @@ sub toolkit {
 
     # template, layout, code
     my %url_map = (
-        'c/contact.cgi' => ['misc/contact_us', 'default'],
-        'c/open_account.cgi' => ['account/open_account', 'default'],
-        'c/affiliate_signup.cgi' => ['affiliates/main', 'default'],
-        'c/pricing_table.cgi' => ['resources/pricing_table_form', 'default'],
-        # 'c/asset_index.cgi' => ['resources/pricing_table_form', 'default'],
-        'c/chart_application.cgi' => ['charting/chart_application', 'default'],
-        'c/livechart.cgi' => ['charting/livechart', 'default'],
-        'c/rise_fall_table.cgi' => ['resources/rise_fall_table', 'default'],
+        'user/open_account' => ['account/open_account', 'default'],
+        'affiliate/signup' => ['affiliates/main', 'default'],
+        'resources/pricing_table' => ['resources/pricing_table_form', 'default'],
+        'charting/application' => ['charting/chart_application', 'default'],
+        'charting/livechart' => ['charting/livechart', 'default'],
+        'resources/rise_fall_table' => ['resources/rise_fall_table', 'default'],
+        'terms-and-conditions' => ['legal/tac', 'default'],
     );
     my $m = $url_map{$curr_path};
 
@@ -44,7 +43,6 @@ sub toolkit {
 
     $c->render(
         template => $m->[0],
-        handler => 'haml',
         defined $m->[1] ? (layout => $m->[1] ? $c->layout($m->[1]) : '') : (),
         $m->[2] ? (status => $m->[2]) : (),
 
@@ -67,10 +65,14 @@ sub haml {
 
     $curr_path = '/' if $curr_path eq '';
 
-    # template, layout, code, renderSkin
+    # template, layout, code
     my %url_map = (
         '/' => ['home/index', 'full_width', '', 1],
         'home' => ['home/index', 'full_width', '', 1],
+
+        'home5' => ['home5/index', 'full_width', '', 1],
+
+
         'ticker' => ['home/ticker', ''],
 
         'why-us' => ['static/why_us', 'full_width'],
@@ -82,6 +84,7 @@ sub haml {
         'group-history' => ['static/group_history', 'full_width'],
         'smart-indices' => ['static/smart_indices', 'full_width'],
         'open-source-projects' => ['static/open_source_projects', 'full_width'],
+        'contact' => ['static/contact', 'full_width'],
 
         'resources' => ['resources/index', $c->layout],
         'charting'  => ['charting/index', $c->layout],
@@ -114,23 +117,13 @@ sub haml {
         push @extra_stash, (loginid => $c->param('loginid')) if $c->param('loginid');
     }
 
-    if ($m->[3]) {
-        $c->renderSkin(
-            template => $m->[0],
-            handler => 'haml',
-            defined $m->[1] ? (layout => $m->[1] ? $c->layout($m->[1]) : '') : (),
-            $m->[2] ? (status => $m->[2]) : (),
-            @extra_stash
-        );
-    } else {
-        $c->render(
-            template => $m->[0],
-            handler => 'haml',
-            defined $m->[1] ? (layout => $m->[1] ? $c->layout($m->[1]) : '') : (),
-            $m->[2] ? (status => $m->[2]) : (),
-            @extra_stash
-        );
-    }
+    $c->render(
+        template => $m->[0],
+        handler => 'haml',
+        defined $m->[1] ? (layout => $m->[1] ? $c->layout($m->[1]) : '') : (),
+        $m->[2] ? (status => $m->[2]) : (),
+        @extra_stash
+    );
 }
 
 sub timestamp {
@@ -165,19 +158,6 @@ sub offline {
     );
 }
 
-sub open_account_with_promocode {
-    my $self           = shift;
-    my $promo_code     = $self->param('promo');
-    my $affilate_token = $self->param('t');
-    return $self->redirect_to(
-        'linkto_acopening.cgi',
-        {
-            actype          => 'real',
-            promotionalcode => $promo_code,
-            t               => $affilate_token
-        });
-}
-
 sub login {
     my $self = shift;
     my ($loginid, $password);
@@ -197,8 +177,7 @@ sub login {
         my $response = ($loginid eq 'DEMO123' and $password eq 'demo') ?
             { success => 1, session_cookie => Mojo::Cookie->new(value => 'abcdefghijklmn')} : {};
         if ($response->{success}) {
-            $self->stash(just_logged_in => 1);
-            $redirect = 'my_account.cgi';
+            $redirect = '/user/my_account';
             $redirect_params->{login} = 'true';
             my $options = $self->cookie_options;
             $options->{expires} = time + 86400 * 30;

@@ -1,13 +1,14 @@
 #footer {
   #footer-menu {
-    background: $BIN_BLUE;
+    background: $COLOR_BLUE;
     h1 {
       font-size: 80%;
-      text-transform: uppercase;
+      // text-transform: uppercase;
     }
     a {
       font-size: 74%;
-      color: $BIN_WHITE;
+      font-weight: normal;
+      color: $COLOR_WHITE;
     }
     li {
       line-height: 1;
@@ -18,18 +19,18 @@
   }
 
   #footer-regulatory {
-    background: $BIN_DARK_BLUE;
+    background: $COLOR_DARK_BLUE;
     a, span {
       display: inline-block;
     }
     a {
-      color: $BIN_WHITE;
+      color: $COLOR_WHITE;
       text-decoration: underline;
     }
     #regulatory-text {
       line-height: 1.2em;
       text-align: justify;
-      color: $BIN_WHITE;
+      color: $COLOR_WHITE;
       font-size: 64%;
     }
     #iom_icon_footer {
@@ -38,28 +39,78 @@
     #lga_icon_footer {
       max-width: 140px;
     }
+    #mfsa_logo{
+      max-width:320px;
+      margin-top:10px;
+    }
+    #mifid_logo{
+      max-width:150px;
+      margin-top:15px;
+    }
     #eighteen_plus {
       max-width: 45px;
     }
     .social-network-icon {
-      width: 30px;
-      height: 30px;
-      padding-right: 5px;
-      padding-top: 10px;
+        width: 30px;
+        height: 30px;
+        padding-right: 5px;
+        padding-top: 10px;
+    }
+    .fb-gplus-follow{
+      margin-top:10px;
+      .fb-like{
+        margin-right: 5px;
+      }
+      .gplus{
+        position:relative;
+        display: inline-block;
+        top: 3px;
+      }
+    }
+    #appcache-reload-message {
+      display: none;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: $COLOR_YELLOW;
+      z-index: 999;
+      text-align: center;
+      .message {
+        margin: 12px;
+        font-style: italic;
+        color: $COLOR_RED;
+        a {
+          color: $COLOR_GREEN;
+        }
+      }
     }
   }
-
+  #footer-last{
+      background: $COLOR_BLUE;
+    a {
+      color: $COLOR_WHITE;
+      text-decoration: underline;
+    }
+    .gambling{
+      margin: 0;
+      text-align: justify;
+      font-size: 74%;
+      font-weight: 400;
+      color:$COLOR_WHITE;
+      line-height: 110%;
+    }
+  }
   #suspend-message {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: $BIN_YELLOW;
+    background-color: $COLOR_YELLOW;
     z-index: 999;
     text-align: center;
     .message {
       margin: 12px;
       font-style: italic;
-      color: $BIN_RED;
+      color: $COLOR_RED;
     }
   }
 }
